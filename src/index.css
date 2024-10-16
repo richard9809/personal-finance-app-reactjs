@@ -70,12 +70,6 @@ html:focus-within {
   scroll-behavior: smooth;
 }
 
-body {
-  font-family: var(--font-primary);
-  background-color: var(--color-beige-100);
-  margin: 0;
-}
-
 h1,
 h2,
 h3 {
@@ -101,149 +95,177 @@ svg {
   display: block;
 }
 
-.layout {
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: var(--font-primary);
+  background-color: var(--color-beige-100);
+  margin: 0;
+}
+
+/* Mobile Layout */
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr auto;
-  min-height: 100%;
 }
 
-aside {
-  grid-row: 2/3;
+#sidebar .logo,
+#sidebar button {
+  display: none;
+}
+
+#sidebar {
+  box-sizing: border-box;
+  overflow: hidden;
+  text-wrap: nowrap;
+  height: 55px;
+  width: 100%;
   background-color: var(--color-grey-900);
-  color: var(--color-white);
   position: fixed;
   bottom: 0;
-  width: 100%;
-  height: 3.75rem;
-  padding-inline: var(--spacing-150);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   border-top-left-radius: var(--spacing-150);
   border-top-right-radius: var(--spacing-150);
 }
 
-.sidebar-tabs {
+#sidebar ul {
+  height: 100%;
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
+  padding: var(--spacing-100) 0 0 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.sidebar-tabs a {
+#sidebar ul li a {
   text-decoration: none;
   color: var(--color-grey-300);
-  font-size: var(--font-size-preset-3);
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  span {
+    display: none;
+  }
 }
 
-/* .sidebar-tabs a::after {
-  content: '';
-  display: inline-block;
-  height: 3px;
-  width: 100%;
-  background-color: var(--color-green);
-} */
 
-.sidebar-tab {
-  padding-block: var(--spacing-150);
-  padding-inline: var(--spacing-300);
+#sidebar ul li a.active {
+  background-color: var(--color-white);
+  padding-inline: var(--spacing-200);
   border-top-left-radius: var(--spacing-150);
   border-top-right-radius: var(--spacing-150);
+
+  span {
+    font-weight: bold;
+    color: var(--color-grey-900);
+  }
 }
 
-.sidebar-tab.active {
-  background-color: var(--color-beige-100);
+main {
+  padding: min(var(--spacing-500), 7%);
+  height: 100%;
 }
 
-.sidebar-tab.active .tab-name {
-  color: var(--color-grey-900);
-  font-weight: 900;
-}
-
-.sidebar-tab img {
-  font-size: var(--spacing-250);
-}
-
-.sidebar-tabs .tab-name {
-  display: none;
-}
-
-.sidebar-tabs .logo {
-  display: none;
-}
-
-.sidebar-tabs .tab-button {
-  display: none;
-  align-items: center;
-  gap: var(--spacing-150);
-  padding-inline: var(--spacing-300);
-}
-
-.sidebar-tabs .tab-button span {
-  font-size: var(--font-size-preset-3);
-  color: var(--color-grey-100);
-}
-
-
-@media (min-width: 768px) {
-  aside {
-    height: 5rem;
+/* Tablet Layout */
+@media (min-width: 480px) and (max-width: 1119px) {
+  #sidebar {
+    height: 75px;
+    border-top-left-radius: var(--spacing-150);
+    border-top-right-radius: var(--spacing-150);
   }
 
-  .sidebar-tab {
-    display: flex;
+  #sidebar ul li a {
     flex-direction: column;
     align-items: center;
-    gap: var(--spacing-50);
-  }
+    justify-content: center;
+    gap: var(--spacing-100);
 
-  .sidebar-tabs .tab-name {
-    display: block;
+    span {
+      display: block;
+    }
   }
 }
 
-@media (min-width: 1140px) {
-  .layout {
-    grid-template-columns: 240px 1fr;
-    min-height: 100vh;
+/* Desktop Layout */
+@media (min-width: 1120px) {
+  #root {
+    grid-template-columns: auto 1fr;
   }
 
-  aside {
-    grid-row: 1/2; /* Ensure the aside element spans the correct rows */
-    grid-column: 1/2; /* Set aside to be in the first column */
-    position: static; /* Remove the fixed positioning for desktop layout */
-    height: auto; /* Let it adapt based on content height */
-    width: auto; /* Let it adapt to grid width */
+  #sidebar {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 250px;
+    bottom: unset;
+    top: 0;
+    position: sticky;
     border-top-left-radius: 0;
+    border-top-right-radius: var(--spacing-150);
     border-bottom-right-radius: var(--spacing-150);
-    padding: var(--spacing-100) var(--spacing-200) var(--spacing-100) 0;
+    padding-block: var(--spacing-300);
+    transition: 300ms ease-in-out;
+    overflow: hidden;
+    text-wrap: nowrap;
+
+    .logo {
+      display: block;
+      padding: var(--spacing-200) var(--spacing-400);
+    }
+
+    ul {
+      padding: var(--spacing-500) 0;
+      flex-direction: column;
+      justify-content: unset;
+      gap: var(--spacing-100);
+
+      li {
+        width: 90%;
+
+        a {
+          flex-direction: row;
+          gap: var(--spacing-300);
+          font: inherit;
+          padding-block: var(--spacing-200);
+          padding-inline: var(--spacing-400);
+
+          span {
+            display: block;
+          }
+        }
+
+        a.active {
+          border-top-left-radius: 0;
+          border-bottom-right-radius: var(--spacing-150);
+          padding-block: var(--spacing-200);
+          padding-inline: var(--spacing-400);
+        }
+      }
+    }
+
+    button {
+      display: block;
+      position: absolute;
+      bottom: 5rem;
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--color-grey-300);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-400);
+      font: inherit;
+      cursor: pointer;
+      padding-inline: var(--spacing-400);
+    }
   }
 
-  .sidebar-tabs {
-    flex-direction: column;
-  }
+  #sidebar.close {
+    width: 90px;
 
-  .sidebar-tabs .logo {
-    display: block;
-  }
-
-  .sidebar-tabs .tab-name {
-    display: block;
-  }
-
-  .sidebar-tabs .tab-button {
-    display: inline-flex;
-  }
-
-  main {
-    grid-column: 2/3;
-  }
-
-  .sidebar-tab {
-    display: flex;
-    flex-direction: row;
-    gap: var(--spacing-150);
-    border-top-left-radius: 0;
-    border-bottom-right-radius: var(--spacing-150);
+    ul li a span {
+      display: none;
+    }
   }
 }

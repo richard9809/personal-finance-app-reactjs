@@ -1,0 +1,219 @@
+#root {
+  background-color: var(--color-beige-100);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+#sidebar {
+  box-sizing: border-box;
+  height: 100vh;
+  width: 250px;
+  padding-block: var(--spacing-300);
+  background-color: var(--color-grey-900);
+  border-top-right-radius: var(--spacing-150);
+  border-bottom-right-radius: var(--spacing-150);
+
+  position: relative;
+  top: 0;
+  align-self: start;
+  transition: 300ms ease-in-out;
+  overflow: hidden;
+  text-wrap: nowrap;
+}
+
+#sidebar.close {
+  /* padding: 5px; */
+  width: 90px;
+
+  ul li a,
+  button {
+    gap: var(--spacing-500);
+  }
+}
+
+#sidebar .logo {
+  padding: var(--spacing-200) var(--spacing-400);
+}
+
+#sidebar ul {
+  padding: 0;
+}
+
+#sidebar ul li {
+  width: 90%;
+}
+
+/* #sidebar ul li::before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  width: 3px;
+  background-color: var(--color-green);
+} */
+
+#sidebar ul li a {
+  text-decoration: none;
+  color: var(--color-grey-300);
+  display: flex;
+  gap: var(--spacing-300);
+  padding-inline: var(--spacing-400);
+  padding-block: var(--spacing-200);
+}
+
+#sidebar ul li a.active {
+  background-color: white;
+  border-top-right-radius: var(--spacing-150);
+  border-bottom-right-radius: var(--spacing-150);
+
+  span {
+    font-weight: bold;
+    color: var(--color-grey-900);
+  }
+
+  svg {
+    fill: var(--color-army-green);
+  }
+}
+
+#sidebar svg {
+  flex-shrink: 0;
+}
+
+#sidebar button {
+  position: absolute;
+  bottom: 5rem;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--color-grey-300);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-300);
+  font: inherit;
+  cursor: pointer;
+  padding-inline: var(--spacing-400);
+}
+
+main {
+  padding: min(var(--spacing-500), 7%);
+}
+
+@media(768px <= width < 1120px) {
+  #root {
+    grid-template-columns: 1fr;
+  }
+
+  main {
+    padding: 2em 1em 60px 1em;
+  }
+
+  #sidebar {
+    height: 75px;
+    width: 100%;
+    padding: 0;
+    position: fixed;
+    top: unset;
+    bottom: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: var(--spacing-150);
+    display: flex;
+    justify-content: space-around;
+  }
+
+  #sidebar.close {
+    width: 100%; /* Ensure it covers full width on mobile when closed */
+
+    ul li a,
+    button {
+      gap: var(--spacing-50);
+    }
+  }
+
+  #sidebar .logo, ul li:last-child {
+    display: none;
+  }
+
+  #sidebar ul {
+    padding: 0;
+    display: grid;
+    grid-auto-columns: 7.5rem;
+    grid-auto-flow: column;
+    align-items: center;
+    gap: var(--spacing-500);
+  }
+
+  #sidebar ul li {
+    height: 100%;
+  }
+
+  #sidebar ul li a {
+    padding-block: var(--spacing-100);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    height: 100%;
+    width: 100%;
+  }
+
+  #sidebar ul li a.active {
+    border-top-left-radius: var(--spacing-150);
+    border-bottom-right-radius: 0;
+  }
+}
+
+@media (375px <= width){
+  #root {
+    grid-template-columns: 1fr;
+  }
+
+  main {
+    padding: 2em 1em 60px 1em;
+  }
+
+  #sidebar {
+    height: 75px;
+    width: 100%;
+    padding: 0 var(--spacing-400);
+    position: fixed;
+    top: unset;
+    bottom: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: var(--spacing-150);
+    display: flex;
+    justify-content: space-around;
+  }
+
+  #sidebar.close {
+    width: 100%; /* Ensure it covers full width on mobile when closed */
+
+    ul li a,
+    button {
+      gap: var(--spacing-50);
+    }
+  }
+
+  #sidebar .logo, ul li:last-child {
+    display: none;
+  }
+
+  #sidebar ul {
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+  }
+
+  #sidebar ul li {
+    height: 100%;
+    padding: 0;
+  }
+
+  #sidebar ul li a span {
+    display: hidden; /* Hide the tab names */
+  }
+
+}
