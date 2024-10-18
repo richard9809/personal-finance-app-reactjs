@@ -1,9 +1,15 @@
 import IconSearch from "../components/icons/IconSearch";
 
-const PFASearchInput = ({ placeholder }) => {
+const PFASearchInput = ({ placeholder, value, onChange }) => {
   return (
     <div className="search-container">
-      <input type="text" className="search-input" placeholder={placeholder} />
+      <input
+        type="text"
+        className="search-input"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
       <div className="search-icon">
         <IconSearch />
       </div>

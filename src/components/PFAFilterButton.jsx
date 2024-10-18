@@ -1,37 +1,58 @@
+import { useState } from "react";
 import IconCaretDown from "./icons/IconCaretDown";
 import IconFilterMobile from "./icons/IconFilterMobile";
 
-const PFAFilterButton = () => {
+const PFAFilterButton = ({ selectedCategory, onCategoryChange }) => {
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownVisible(!isDropdownVisible);
+  };
+
   return (
     <div className="filter-button">
       <label htmlFor="category">Category</label>
-      <button id="category">
+      <button id="category" onClick={toggleDropdown}>
         <div className="mobile-layout">
           <IconFilterMobile />
         </div>
 
         <div className="desktop-layout">
-          <span>All Transactions</span>
+          <span>{selectedCategory}</span>
           <IconCaretDown />
         </div>
       </button>
 
-      <div className="filter-content">
+      <div className={`filter-content ${isDropdownVisible ? "show" : "hide"}`}>
         <div className="card">
           <div className="card-body">
             <div className="menu">
-              <a href="#">All Transactions</a>
-              <a href="#">Entertainment</a>
-              <a href="#">Bills</a>
-              <a href="#">Groceries</a>
-              <a href="#">Dining Out</a>
-              <a href="#">Transportation</a>
+              {[
+                "All Transactions",
+                "Entertainment",
+                "Bills",
+                "Groceries",
+                "Dining Out",
+                "Transportation",
+              ].map((category) => (
+                <a
+                  href="#"
+                  key={category}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onCategoryChange(category);
+                    setDropdownVisible(false);
+                  }}
+                >
+                  {category}
+                </a>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default PFAFilterButton

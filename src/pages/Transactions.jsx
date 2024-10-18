@@ -1,8 +1,83 @@
+import { useState } from "react";
 import PFAFilterButton from "../components/PFAFilterButton";
+import PFAPagination from "../components/PFAPagination";
 import PFASearchInput from "../components/PFASearchInput";
 import PFASortButton from "../components/PFASortButton";
+import JsonData from "../../data.json";
 
 const Transactions = () => {
+  const transactionsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [transactions, setTransactions] = useState(JsonData.transactions);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortType, setSortType] = useState("Latest");
+  const [selectedCategory, setSelectedCategory] = useState("All Transactions");
+
+  // Filter and search logic
+  const filteredTransactions = transactions.filter((transaction) => {
+    const matchesCategory =
+      selectedCategory === "All Transactions" ||
+      transaction.category === selectedCategory;
+    const matchesSearch = transaction.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
+
+  // Sort logic
+  const sortedTransactions = [...filteredTransactions].sort((a, b) => {
+    if (sortType === "Latest") {
+      return new Date(b.date) - new Date(a.date);
+    } else if (sortType === "Oldest") {
+      return new Date(a.date) - new Date(b.date);
+    } else if (sortType === "A to Z") {
+      return a.name.localeCompare(b.name);
+    } else if (sortType === "Z to A") {
+      return b.name.localeCompare(a.name);
+    } else if (sortType === "Highest") {
+      return b.amount - a.amount;
+    } else if (sortType === "Lowest") {
+      return a.amount - b.amount;
+    }
+    return 0;
+  });
+
+  // Pagination logic
+  const totalPages = Math.ceil(sortedTransactions.length / transactionsPerPage);
+  const currentTransactions = sortedTransactions.slice(
+    (currentPage - 1) * transactionsPerPage,
+    currentPage * transactionsPerPage
+  );
+
+  const transactionRows = currentTransactions.map((transaction, index) => (
+    <tr key={index}>
+      <td className="recepient">
+        <img src={transaction.avatar} alt="avatar" />
+        <span>{transaction.name}</span>
+      </td>
+      <td className="name">{transaction.name}</td>
+      <td className="category">{transaction.category}</td>
+      <td className="date">
+        {new Date(transaction.date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })}
+      </td>
+      <td
+        className="amount"
+        style={{
+          color: transaction.amount > 0 ? "hsl(177, 52%, 32%)" : "",
+        }}
+      >
+        {transaction.amount > 0
+          ? `+ $${Math.abs(transaction.amount).toFixed(2)}`
+          : `- $${Math.abs(transaction.amount).toFixed(2)}`}
+      </td>
+    </tr>
+  ));
+
   return (
     <div className="transaction-page">
       <h1>Transactions</h1>
@@ -10,10 +85,20 @@ const Transactions = () => {
       <div className="card">
         <div className="card-header">
           <div className="table-filters">
-            <PFASearchInput placeholder="Search transaction" />
+            <PFASearchInput
+              placeholder="Search transaction"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <div className="filter-buttons">
-              <PFASortButton />
-              <PFAFilterButton />
+              <PFASortButton
+                sortType={sortType}
+                onSortChange={setSortType}
+              />
+              <PFAFilterButton
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+              />
             </div>
           </div>
         </div>
@@ -28,29 +113,20 @@ const Transactions = () => {
                 <th className="amount">Amount</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td className="recepient">
-                  <img
-                    src="/assets/images/avatars/emma-richardson.jpg"
-                    alt="avatar"
-                  />
-                  <span>Emma Richardson</span>
-                </td>
-                <td className="name">Emma Richardson</td>
-                <td className="category">General</td>
-                <td className="date">29 Aug 2024</td>
-                <td className="amount">75.50</td>
-              </tr>
-            </tbody>
+            <tbody>{transactionRows}</tbody>
           </table>
         </div>
+
         <div className="card-footer">
-          <p>Card Footer</p>
+          <PFAPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default Transactions
+export default Transactions;
