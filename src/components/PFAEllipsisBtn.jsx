@@ -3,16 +3,14 @@ import IconEllipsis from "../components/icons/IconEllipsis";
 import EditPotModal from "../components/modals/EditPotModal";
 import DeletePotModal from "../components/modals/DeletePotModal";
 
-const PFAEllipsisBtn = () => {
+const PFAEllipsisBtn = ({ deletePot, editPot, pot }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const [showEditPotModal, setShowEditPotModal] = useState(false);
+  const [showDeletePotModal, setShowDeletePotModal] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownVisible(!isDropdownVisible);
   };
-
-  const [showEditPotModal, setShowEditPotModal] = useState(false);
-
-  const [showDeletePotModal, setShowDeletePotModal] = useState(false);
 
   const handleEditPotModal = () => {
     setShowEditPotModal(!showEditPotModal);
@@ -61,9 +59,19 @@ const PFAEllipsisBtn = () => {
         </div>
       </div>
 
-      {showEditPotModal && <EditPotModal toggleModal={handleEditPotModal} />}
+      {showEditPotModal && (
+        <EditPotModal
+          toggleModal={handleEditPotModal}
+          pot={pot}
+          editPot={editPot} // Function to handle editing
+        />
+      )}
       {showDeletePotModal && (
-        <DeletePotModal toggleModal={handleDeletePotModal} />
+        <DeletePotModal
+          toggleModal={handleDeletePotModal}
+          deletePot={deletePot}
+          potId={pot.id}
+        />
       )}
     </>
   );

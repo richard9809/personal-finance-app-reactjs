@@ -501,32 +501,32 @@
     {
       "id": 9,
       "name": "Magenta",
-      "theme": "#FF00FF"
+      "theme": "#934F6F"
     },
     {
       "id": 10,
       "name": "Blue",
-      "theme": "#0000FF"
+      "theme": "#3F82B2"
     },
     {
       "id": 11,
       "name": "Grey",
-      "theme": "#808080"
+      "theme": "#97A0AC"
     },
     {
       "id": 12,
       "name": "Army",
-      "theme": "#4B5320"
+      "theme": "#7F9161"
     },
     {
       "id": 13,
-      "name": "Pink",
-      "theme": "#FFC0CB"
+      "name": "Gold",
+      "theme": "#CAB361"
     },
     {
       "id": 14,
       "name": "Orange",
-      "theme": "#FFA500"
+      "theme": "#BE6C49"
     }
   ]
 }

@@ -7,22 +7,77 @@ import AddMoneyModal from "../components/modals/AddMoneyModal";
 import WithdrawModal from "../components/modals/WithdrawModal";
 
 const Pots = () => {
-  const pots = JsonData.pots;
+  const [pots, setPots] = useState(JsonData.pots);
+  const [balance, setBalance] = useState(JsonData.balance.current);
 
+  const [selectedPot, setSelectedPot] = useState(null);
   const [showAddPotModal, setShowAddPotModal] = useState(false);
   const [showAddMoneyModal, setShowAddMoneyModal] = useState(false);
-  const [showWithdrawModal, setShowWithdrawModal] = useState(false);  
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 
   const handleAddPotModal = () => {
     setShowAddPotModal(!showAddPotModal);
   };
 
-  const handleAddMoneyModal = () => {
+  const handleAddMoneyModal = (pot) => {
+    setSelectedPot(pot);
     setShowAddMoneyModal(!showAddMoneyModal);
   };
 
-  const handleWithdrawModal = () => {
+  const handleWithdrawModal = (pot) => {
+    setSelectedPot(pot);
     setShowWithdrawModal(!showWithdrawModal);
+  };
+
+  const addNewPot = (newPot) => {
+    setPots([...pots, newPot]); // Add the new pot to the existing pots
+  };
+
+  const editPot = (id, updatedPot) => {
+    const updatedPots = pots.map((pot) => (pot.id === id ? updatedPot : pot));
+    setPots(updatedPots);
+  };
+
+  const addMoneyToPot = (potId, amount) => {
+    const updatedPots = pots.map((pot) => {
+      if (pot.id === potId) {
+        return {
+          ...pot,
+          total: pot.total + amount,
+        };
+      }
+      return pot;
+    });
+
+    setPots(updatedPots);
+    setBalance(balance - amount);
+  };
+
+  const deductMoneyFromPot = (potId, amount) => {
+    const updatedPots = pots.map((pot) => {
+      if (pot.id === potId) {
+        return {
+          ...pot,
+          total: pot.total - amount,
+        };
+      }
+      return pot;
+    });
+
+    setPots(updatedPots);
+    setBalance(balance + amount);
+  };
+
+  const deletePot = (potId) => {
+    const potToDelete = pots.find((pot) => pot.id === potId);
+    if (!potToDelete) return;
+
+    // Return all the money from the pot to the balance
+    setBalance(balance + potToDelete.total);
+
+    // Remove the pot from the pots array
+    const updatedPots = pots.filter((pot) => pot.id !== potId);
+    setPots(updatedPots);
   };
 
   const cardPots = pots.map((card) => {
@@ -40,7 +95,12 @@ const Pots = () => {
               ></div>
               <h2>{card.name}</h2>
             </div>
-            <PFAEllipsisBtn />
+            <PFAEllipsisBtn
+              deletePot={deletePot}
+              potId={card.id}
+              editPot={editPot}
+              pot={card}
+            />
           </div>
         </div>
         <div className="card-body">
@@ -58,7 +118,7 @@ const Pots = () => {
             <div className="progress-section">
               <ProgressBar theme={card.theme} progress={progressPercentage} />
               <section className="flex-between">
-                <p>{progressPercentage}%</p>
+                <p>{progressPercentage.toFixed(2)}%</p>
                 <p>Target of ${card.target.toLocaleString()}</p>
               </section>
             </div>
@@ -66,10 +126,10 @@ const Pots = () => {
         </div>
         <div className="card-footer">
           <div className="buttons">
-            <button onClick={handleAddMoneyModal}>
+            <button onClick={() => handleAddMoneyModal(card)}>
               <span>+ Add Money</span>
             </button>
-            <button onClick={handleWithdrawModal}>
+            <button onClick={() => handleWithdrawModal(card)}>
               <span>Withdraw</span>
             </button>
           </div>
@@ -88,9 +148,23 @@ const Pots = () => {
         <div className="section-2">{cardPots}</div>
       </div>
 
-      {showAddPotModal && <AddNewPotModal toggleModal={handleAddPotModal} />}
-      {showAddMoneyModal && <AddMoneyModal toggleModal={handleAddMoneyModal} />}
-      {showWithdrawModal && <WithdrawModal toggleModal={handleWithdrawModal} />}
+      {showAddPotModal && (
+        <AddNewPotModal toggleModal={handleAddPotModal} addNewPot={addNewPot} />
+      )}
+      {showAddMoneyModal && (
+        <AddMoneyModal
+          toggleModal={handleAddMoneyModal}
+          pot={selectedPot}
+          addMoneyToPot={addMoneyToPot}
+        />
+      )}
+      {showWithdrawModal && (
+        <WithdrawModal
+          toggleModal={handleWithdrawModal}
+          pot={selectedPot}
+          deductMoneyFromPot={deductMoneyFromPot}
+        />
+      )}
     </>
   );
 };

@@ -2,13 +2,8 @@ import { useEffect, useState } from "react";
 import IconCaretDown from "../components/icons/IconCaretDown";
 import data from "../../data.json";
 
-const PFADropdown = () => {
+const PFADropdown = ({ selectedColor, setSelectedColor }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const [selectedColor, setSelectedColor] = useState({
-    id: 1,
-    name: "Green",
-    theme: "#277C78",
-  }); // Track the selected color
   const [availableColors, setAvailableColors] = useState([]); // Available colors excluding those already used
 
   const toggleDropdown = () => {
