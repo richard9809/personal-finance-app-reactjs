@@ -1,12 +1,16 @@
 import React from 'react'
 
-const IconCaretRight = ({ fillColor = "#b3b3b3" }) => {
+const IconCaretRight = ({
+  fillColor = "#b3b3b3",
+  height = "22",
+  width = "18"
+ }) => {
   return (
     <svg
       fill="none"
-      height="22"
+      height={height}
       viewBox="0 0 6 11"
-      width="18"
+      width={width}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

@@ -86,7 +86,7 @@ const Pots = () => {
     return (
       <div key={card.id} className="card">
         <div className="card-header">
-          <div className="flex-between">
+          <div className="custom-card-header flex-between">
             <div className="section-1">
               <div
                 style={{
@@ -143,7 +143,9 @@ const Pots = () => {
       <div className="pots-page">
         <div className="section-1 flex-between">
           <h1>Pots</h1>
-          <button onClick={handleAddPotModal}>+ Add New Pot</button>
+          <button className="dark-cta-btn" onClick={handleAddPotModal}>
+            + Add New Pot
+          </button>
         </div>
         <div className="section-2">{cardPots}</div>
       </div>
