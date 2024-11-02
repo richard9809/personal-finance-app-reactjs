@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import LargeProgressBar from "../components/LargeProgressBar";
 import IconCaretRight from "../components/icons/IconCaretRight";
 import BudgetEllipsisBtn from "./BudgetEllipsisBtn";
 
 const BudgetItem = ({ budget, editBudget, deleteBudget }) => {
+  const navigate = useNavigate();
   const { spentAmount, maximum, latestTransactions } = budget;
   const remaining = maximum - spentAmount;
 
@@ -20,6 +22,10 @@ const BudgetItem = ({ budget, editBudget, deleteBudget }) => {
       </div>
     </tr>
   ));
+
+  const handleSeeAll = () => {
+    navigate("/transactions", { state: { category: budget.category } })
+  }
 
   return (
     <div className="card">
@@ -77,7 +83,7 @@ const BudgetItem = ({ budget, editBudget, deleteBudget }) => {
               <div className="card-body">
                 <div className="flex-between">
                   <h3>Latest Spending</h3>
-                  <span className="see-details">
+                  <span className="see-details" onClick={handleSeeAll}>
                     See All
                     <IconCaretRight height="12" width="15" />
                   </span>

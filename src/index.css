@@ -415,6 +415,11 @@ h5 {
   color: var(--color-grey-500);
   font-size: var(--font-size-preset-4);
   font-weight: light;
+  cursor: pointer;
+}
+
+.see-details:hover {
+  color: var(--color-grey-900);
 }
 
 .modal,

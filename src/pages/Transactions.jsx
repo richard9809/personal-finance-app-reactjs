@@ -1,17 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PFAFilterButton from "../components/PFAFilterButton";
 import PFAPagination from "../components/PFAPagination";
 import PFASearchInput from "../components/PFASearchInput";
 import PFASortButton from "../components/PFASortButton";
 import JsonData from "../../data.json";
+import { useLocation } from "react-router-dom";
 
 const Transactions = () => {
+  const location = useLocation();
   const transactionsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [transactions, setTransactions] = useState(JsonData.transactions);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortType, setSortType] = useState("Latest");
   const [selectedCategory, setSelectedCategory] = useState("All Transactions");
+
+  useEffect(() => {
+    if (location.state?.category) {
+      setSelectedCategory(location.state.category);
+    }
+  }, [location.state]);
 
   // Filter and search logic
   const filteredTransactions = transactions.filter((transaction) => {
@@ -91,10 +99,7 @@ const Transactions = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <div className="filter-buttons">
-              <PFASortButton
-                sortType={sortType}
-                onSortChange={setSortType}
-              />
+              <PFASortButton sortType={sortType} onSortChange={setSortType} />
               <PFAFilterButton
                 selectedCategory={selectedCategory}
                 onCategoryChange={setSelectedCategory}
