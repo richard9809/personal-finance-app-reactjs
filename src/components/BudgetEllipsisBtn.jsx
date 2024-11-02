@@ -1,23 +1,23 @@
 import { useState } from "react";
-import IconEllipsis from "../components/icons/IconEllipsis";
-import EditPotModal from "../components/modals/EditPotModal";
-import DeletePotModal from "../components/modals/DeletePotModal";
+import IconEllipsis from "./icons/IconEllipsis";
+import EditBudgetModal from "./BudgetModal/EditBudgetModal";
+import DeleteBudgetModal from "./BudgetModal/DeleteBudgetModal";
 
-const PFAEllipsisBtn = ({ deletePot, editPot, pot }) => {
+const BudgetEllipsisBtn = ({ budget, editBudget, deleteBudget }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const [showEditPotModal, setShowEditPotModal] = useState(false);
-  const [showDeletePotModal, setShowDeletePotModal] = useState(false);
+  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false);
+  const [showDeleteBudgetModal, setShowDeleteBudgetModal] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownVisible(!isDropdownVisible);
   };
 
-  const handleEditPotModal = () => {
-    setShowEditPotModal(!showEditPotModal);
+  const handleEditBudgetModal = () => {
+    setShowEditBudgetModal(!showEditBudgetModal);
   };
 
-  const handleDeletePotModal = () => {
-    setShowDeletePotModal(!showDeletePotModal);
+  const handleDeleteBudgetModal = () => {
+    setShowDeleteBudgetModal(!showDeleteBudgetModal);
   };
 
   return (
@@ -38,20 +38,20 @@ const PFAEllipsisBtn = ({ deletePot, editPot, pot }) => {
                   onClick={(e) => {
                     e.preventDefault();
                     setDropdownVisible(false);
-                    handleEditPotModal();
+                    handleEditBudgetModal();
                   }}
                 >
-                  Edit Pot
+                  Edit Budget
                 </a>
                 <a
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
                     setDropdownVisible(false);
-                    handleDeletePotModal();
+                    handleDeleteBudgetModal();
                   }}
                 >
-                  Delete Pot
+                  Delete Budget
                 </a>
               </div>
             </div>
@@ -59,23 +59,23 @@ const PFAEllipsisBtn = ({ deletePot, editPot, pot }) => {
         </div>
       </div>
 
-      {showEditPotModal && (
-        <EditPotModal
-          toggleModal={handleEditPotModal}
-          pot={pot}
-          editPot={editPot} // Function to handle editing
+      {showEditBudgetModal && (
+        <EditBudgetModal
+          toggleModal={handleEditBudgetModal}
+          budget={budget}
+          editBudget={editBudget}
         />
       )}
-      {showDeletePotModal && (
-        <DeletePotModal
-          toggleModal={handleDeletePotModal}
-          deletePot={deletePot}
-          potId={pot.id}
-          potName={pot.name}
+
+      {showDeleteBudgetModal && (
+        <DeleteBudgetModal
+          toggleModal={handleDeleteBudgetModal}
+          category={budget.category}
+          deleteBudget={deleteBudget}
         />
       )}
     </>
   );
 };
 
-export default PFAEllipsisBtn;
+export default BudgetEllipsisBtn;

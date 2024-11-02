@@ -1,22 +1,21 @@
 import PFACancelModalButton from "../PFACancelModalButton";
 
-const DeletePotModal = ({ toggleModal, deletePot, potId, potName }) => {
+const DeleteBudgetModal = ({ toggleModal, deleteBudget, category }) => {
   const handleConfirmDelete = () => {
-    deletePot(potId);
+    deleteBudget(category);
     toggleModal();
-  };
-
+  }
   return (
     <div className="modal">
       <div className="overlay" onClick={toggleModal}></div>
       <div className="modal-content">
         <div className="modal-flex-column">
           <div className="flex-between">
-            <h2>Delete &apos;{potName}&apos; ?</h2>
+            <h2>Delete &apos;{category}&apos; ?</h2>
             <PFACancelModalButton toggleModal={toggleModal} />
           </div>
           <p>
-            Are you sure you want to delete this pot? This action cannot be
+            Are you sure you want to delete this budget? This action cannot be
             reversed, and all the data inside it will be removed forever.
           </p>
           <button onClick={handleConfirmDelete} className="secondary-modal-btn">
@@ -31,4 +30,4 @@ const DeletePotModal = ({ toggleModal, deletePot, potId, potName }) => {
   );
 };
 
-export default DeletePotModal;
+export default DeleteBudgetModal;

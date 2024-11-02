@@ -67,7 +67,9 @@ const AddNewPotModal = ({ toggleModal, addNewPot }) => {
               <PFADropdown selectedColor={theme} setSelectedColor={setTheme} />
             </div>
           </div>
-          <button onClick={handleAddPot} className="primary-modal-btn">Add Pot</button>
+          <button onClick={handleAddPot} className="primary-modal-btn">
+            Add Pot
+          </button>
         </div>
       </div>
     </div>

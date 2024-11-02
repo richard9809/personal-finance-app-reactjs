@@ -3,13 +3,16 @@ import { Doughnut } from "react-chartjs-2";
 import JsonData from "../../data.json";
 import { useState } from "react";
 import BudgetItem from "../components/BudgetItem";
+import AddNewBudgetModal from "../components/BudgetModal/AddNewBudgetModal";
 
 defaults.maintainAspectRatio = true;
 defaults.responsive = true;
 
 const Budgets = () => {
-  const [budgets] = useState(JsonData.budgets);
+  const [budgets, setBudgets] = useState(JsonData.budgets);
   const [transactions] = useState(JsonData.transactions);
+
+  const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
 
   // Get the current date for filtering transactions by month
   const currentMonth = 7; // August (0-indexed)
@@ -46,55 +49,92 @@ const Budgets = () => {
     };
   });
 
-  console.log(enrichedBudgets);
+  const handleAddBudgetModal = () => {
+    setShowAddBudgetModal(!showAddBudgetModal);
+  };
+
+  const addNewBudget = (newBudget) => {
+    setBudgets([...budgets, newBudget]);
+  };
+
+  const editBudget = (category, updatedBudget) => {
+    const updatedBudgets = budgets.map((budget) =>
+      budget.category === category ? updatedBudget : budget
+    );
+    setBudgets(updatedBudgets);
+  };
+
+  const deleteBudget = (category) => {
+    const budgetToDelete = budgets.find((budget) => budget.category === category);
+    if (!budgetToDelete) return;
+
+    const updatedBudgets = budgets.filter((budget) => budget.category !== category);
+    setBudgets(updatedBudgets);
+  }
 
   const cardBudgets = enrichedBudgets.map((budget) => (
-    <BudgetItem key={budget.id} budget={budget} />
+    <BudgetItem
+      key={budget.id}
+      budget={budget}
+      editBudget={editBudget}
+      deleteBudget={deleteBudget}
+    />
   ));
 
   return (
-    <div className="budgets-page">
-      <div className="section-1 flex-between">
-        <h1>Budgets</h1>
-        <button className="dark-cta-btn">+ Add New Budget</button>
-      </div>
-      <div className="budgets-content">
-        <div className="summary">
-          <div className="card">
-            <div className="card-body">
-              <div className="chart-container">
-                <Doughnut
-                  data={{
-                    labels: enrichedBudgets.map((budget) => budget.category),
-                    datasets: [
-                      {
-                        label: "Budget $",
-                        data: enrichedBudgets.map(
-                          (budget) => budget.spentAmount
-                        ),
-                        backgroundColor: enrichedBudgets.map(
-                          (budget) => budget.theme
-                        ),
-                        hoverBackgroundColor: enrichedBudgets.map(
-                          (budget) => budget.theme
-                        ),
-                        borderColor: enrichedBudgets.map(
-                          (budget) => budget.theme
-                        ),
-                      },
-                    ],
-                  }}
-                  options={{
-                    cutout: "70%",
-                  }}
-                />
+    <>
+      <div className="budgets-page">
+        <div className="section-1 flex-between">
+          <h1>Budgets</h1>
+          <button className="dark-cta-btn" onClick={handleAddBudgetModal}>
+            + Add New Budget
+          </button>
+        </div>
+        <div className="budgets-content">
+          <div className="summary">
+            <div className="card">
+              <div className="card-body">
+                <div className="chart-container">
+                  <Doughnut
+                    data={{
+                      labels: enrichedBudgets.map((budget) => budget.category),
+                      datasets: [
+                        {
+                          label: "Spent $",
+                          data: enrichedBudgets.map(
+                            (budget) => budget.spentAmount
+                          ),
+                          backgroundColor: enrichedBudgets.map(
+                            (budget) => budget.theme
+                          ),
+                          hoverBackgroundColor: enrichedBudgets.map(
+                            (budget) => budget.theme
+                          ),
+                          borderColor: enrichedBudgets.map(
+                            (budget) => budget.theme
+                          ),
+                        },
+                      ],
+                    }}
+                    options={{
+                      cutout: "70%",
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
+          <div className="budgets-container">{cardBudgets}</div>
         </div>
-        <div className="budgets-container">{cardBudgets}</div>
       </div>
-    </div>
+
+      {showAddBudgetModal && (
+        <AddNewBudgetModal
+          toggleModal={handleAddBudgetModal}
+          addNewBudget={addNewBudget}
+        />
+      )}
+    </>
   );
 };
 

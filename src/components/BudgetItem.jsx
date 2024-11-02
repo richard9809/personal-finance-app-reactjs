@@ -1,8 +1,8 @@
 import LargeProgressBar from "../components/LargeProgressBar";
-import PFAEllipsisBtn from "../components/PFAEllipsisBtn";
 import IconCaretRight from "../components/icons/IconCaretRight";
+import BudgetEllipsisBtn from "./BudgetEllipsisBtn";
 
-const BudgetItem = ({ budget }) => {
+const BudgetItem = ({ budget, editBudget, deleteBudget }) => {
   const { spentAmount, maximum, latestTransactions } = budget;
   const remaining = maximum - spentAmount;
 
@@ -13,9 +13,7 @@ const BudgetItem = ({ budget }) => {
         <span>{transaction.name}</span>
       </td>
       <div>
-        <td className="amount">
-          - ${Math.abs(transaction.amount).toFixed(2)}
-        </td>
+        <td className="amount">- ${Math.abs(transaction.amount).toFixed(2)}</td>
         <td className="date">
           {new Date(transaction.date).toLocaleDateString()}
         </td>
@@ -35,7 +33,11 @@ const BudgetItem = ({ budget }) => {
             ></div>
             <h2>{budget.category}</h2>
           </div>
-          <PFAEllipsisBtn />
+          <BudgetEllipsisBtn
+            budget={budget}
+            editBudget={editBudget}
+            deleteBudget={deleteBudget}
+          />
         </div>
       </div>
       <div className="card-body">
