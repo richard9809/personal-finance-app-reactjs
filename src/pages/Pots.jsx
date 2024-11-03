@@ -2,13 +2,14 @@ import PFAEllipsisBtn from "../components/PFAEllipsisBtn";
 import ProgressBar from "../components/ProgressBar";
 import JsonData from "../../data.json";
 import AddNewPotModal from "../components/modals/AddNewPotModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import AddMoneyModal from "../components/modals/AddMoneyModal";
 import WithdrawModal from "../components/modals/WithdrawModal";
+import { AuthContext } from "../context/AuthProvider";
 
 const Pots = () => {
   const [pots, setPots] = useState(JsonData.pots);
-  const [balance, setBalance] = useState(JsonData.balance.current);
+  const { balance, setBalance } = useContext(AuthContext);
 
   const [selectedPot, setSelectedPot] = useState(null);
   const [showAddPotModal, setShowAddPotModal] = useState(false);

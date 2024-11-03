@@ -1,53 +1,18 @@
 import { defaults } from "chart.js/auto";
 import { Doughnut } from "react-chartjs-2";
-import JsonData from "../../data.json";
-import { useState } from "react";
+import { AuthContext } from "../context/AuthProvider";
+import { useContext, useState } from "react";
 import BudgetItem from "../components/BudgetItem";
 import AddNewBudgetModal from "../components/BudgetModal/AddNewBudgetModal";
+import PFADoughnut from "../components/PFADoughnut";
 
 defaults.maintainAspectRatio = true;
 defaults.responsive = true;
 
 const Budgets = () => {
-  const [budgets, setBudgets] = useState(JsonData.budgets);
-  const [transactions] = useState(JsonData.transactions);
+  const { budgets, setBudgets, enrichedBudgets } = useContext(AuthContext);
 
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
-
-  // Get the current date for filtering transactions by month
-  const currentMonth = 7; // August (0-indexed)
-  const currentYear = 2024;
-
-  // Transform budgets with spentAmount and latestTransactions fields
-  const enrichedBudgets = budgets.map((budget, index) => {
-    const categoryTransactions = transactions.filter(
-      (transaction) => transaction.category === budget.category
-    );
-
-    // Calculate the spentAmount for the currentMonth
-    const spentAmount = categoryTransactions
-      .filter((transaction) => {
-        const transactionDate = new Date(transaction.date);
-        return (
-          transactionDate.getMonth() === currentMonth &&
-          transactionDate.getFullYear() === currentYear
-        );
-      })
-      .reduce((sum, transaction) => sum + Math.abs(transaction.amount), 0);
-
-    // Get the latest transactions regardless of the month
-    const latestTransactions = categoryTransactions
-      .slice()
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 3);
-
-    return {
-      id: index + 1,
-      ...budget,
-      spentAmount,
-      latestTransactions,
-    };
-  });
 
   const handleAddBudgetModal = () => {
     setShowAddBudgetModal(!showAddBudgetModal);
@@ -94,33 +59,7 @@ const Budgets = () => {
           <div className="summary">
             <div className="card">
               <div className="card-body">
-                <div className="chart-container">
-                  <Doughnut
-                    data={{
-                      labels: enrichedBudgets.map((budget) => budget.category),
-                      datasets: [
-                        {
-                          label: "Spent $",
-                          data: enrichedBudgets.map(
-                            (budget) => budget.spentAmount
-                          ),
-                          backgroundColor: enrichedBudgets.map(
-                            (budget) => budget.theme
-                          ),
-                          hoverBackgroundColor: enrichedBudgets.map(
-                            (budget) => budget.theme
-                          ),
-                          borderColor: enrichedBudgets.map(
-                            (budget) => budget.theme
-                          ),
-                        },
-                      ],
-                    }}
-                    options={{
-                      cutout: "70%",
-                    }}
-                  />
-                </div>
+                <PFADoughnut />
               </div>
             </div>
           </div>

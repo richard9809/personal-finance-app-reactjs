@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import LargeProgressBar from "../components/LargeProgressBar";
 import IconCaretRight from "../components/icons/IconCaretRight";
 import BudgetEllipsisBtn from "./BudgetEllipsisBtn";
+import ColoredInfo from "./ColoredInfo";
 
 const BudgetItem = ({ budget, editBudget, deleteBudget }) => {
   const navigate = useNavigate();
@@ -24,8 +25,8 @@ const BudgetItem = ({ budget, editBudget, deleteBudget }) => {
   ));
 
   const handleSeeAll = () => {
-    navigate("/transactions", { state: { category: budget.category } })
-  }
+    navigate("/transactions", { state: { category: budget.category } });
+  };
 
   return (
     <div className="card">
@@ -52,24 +53,16 @@ const BudgetItem = ({ budget, editBudget, deleteBudget }) => {
             <h4 className="no-bold">Maximum of ${budget.maximum.toFixed(2)}</h4>
             <LargeProgressBar budget={budget} />
             <div className="budget-info">
-              <div
-                className="colored-info"
-                style={{
-                  "--colored-info-theme": budget.theme,
-                }}
-              >
-                <span>Spent</span>
-                <span>${budget.spentAmount.toFixed(2)}</span>
-              </div>
-              <div
-                className="colored-info"
-                style={{
-                  "--colored-info-theme": "#F8F4F0",
-                }}
-              >
-                <span>Remaining</span>
-                <span>${remaining.toFixed(2)}</span>
-              </div>
+              <ColoredInfo
+                title="Spent"
+                theme={budget.theme}
+                amount={budget.spentAmount}
+              />
+              <ColoredInfo
+                title="Remaining"
+                theme="#F8F4F0"
+                amount={remaining}
+              />
             </div>
           </section>
           <section>

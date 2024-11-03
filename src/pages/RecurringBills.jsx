@@ -80,7 +80,7 @@ const RecurringBills = () => {
   });
 
   const totalBills = updatedTransactions.reduce(
-    (acc, currentValue) => acc + Math.abs(currentValue.amount),
+    (acc, transaction) => acc + Math.abs(transaction.amount),
     0
   );
 
