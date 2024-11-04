@@ -41,8 +41,8 @@ The app allows users to manage their personal finances with a variety of feature
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://github.com/richard9809/personal-finance-app-reactjs)
-- Live Site URL: [Add live site URL here](https://wonderful-florentine-718eb3.netlify.app/)
+- Solution URL: [Github URL](https://github.com/richard9809/personal-finance-app-reactjs)
+- Live Site URL: [Live Site URL](https://wonderful-florentine-718eb3.netlify.app/)
 
 ## My process
 
@@ -95,4 +95,3 @@ In future projects, I aim to focus more on:
 ## Acknowledgments
 
 Thanks to the Frontend Mentor community for helpful resources and support throughout the challenge.
-
