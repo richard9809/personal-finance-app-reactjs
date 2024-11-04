@@ -81,7 +81,6 @@ In future projects, I aim to focus more on:
 - Improving Performance: Optimizing data handling and load times with caching strategies.
 - Advanced State Management: Implementing Redux or Context API for more complex data flows in larger applications.
 
-**Note: Delete this note and the content within this section and replace with your own plans for continued development.**
 
 ### Useful resources
 
